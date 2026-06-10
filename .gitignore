@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Local legacy reference: never upload
+legacy-reference/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Database exports and archives
+*.sql
+*.zip
+
+# Frontend dependencies
+node_modules/
+
+# Laravel dependencies
+vendor/
+
+# Logs
+*.log
+
+# Editors
+.vscode/
+.idea/
