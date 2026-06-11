@@ -112,9 +112,13 @@ Version 1 should use a new Laravel-managed MySQL schema with fresh migrations, f
 #### `users`
 
 - `id`
+- `name`
 - `username` unique
 - `email` unique
 - `password`
+- `bio` nullable
+- `skills_offered` nullable
+- `skills_wanted` nullable
 - `created_at`
 - `updated_at`
 
@@ -166,6 +170,7 @@ Suggested constraints:
 Suggested uniqueness rule:
 
 - One conversation per `post_id` plus participant pair
+- Later application logic should normalize participant IDs before insert so the unique constraint is reliable.
 
 #### `messages`
 

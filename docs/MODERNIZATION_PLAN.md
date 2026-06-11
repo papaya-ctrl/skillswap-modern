@@ -217,9 +217,13 @@ php artisan storage:link
 
 - `users`
   - `id`
+  - `name`
   - `username`
   - `email`
   - `password`
+  - `bio` nullable
+  - `skills_offered` nullable
+  - `skills_wanted` nullable
   - `timestamps`
 - `categories`
   - `id`
@@ -249,6 +253,7 @@ php artisan storage:link
   - `user_one_id`
   - `user_two_id`
   - `timestamps`
+  - unique participant pair per post, with application logic normalizing participant order before insert
 - `messages`
   - `id`
   - `conversation_id`
