@@ -29,14 +29,16 @@ It intentionally excludes Version 2 features:
 - The frontend sends requests with `credentials: 'include'`.
 - Laravel Sanctum manages SPA authentication through cookies and session state.
 - Protected endpoints return `401 Unauthorized` when the user is not logged in.
+- The frontend must fetch `GET /sanctum/csrf-cookie` before `POST /register`, `POST /login`, and `POST /logout`.
 
 ### Auth flow
 
-1. Frontend loads and checks current auth state with `GET /me`.
+1. Frontend loads and checks current auth state with `GET /api/me`.
 2. User submits registration or login form.
-3. Backend authenticates, regenerates the session, and returns the authenticated user.
-4. Frontend stores only UI state. Auth remains server-side.
-5. Logout clears the server session and returns success.
+3. Registration creates the account only and returns a success message that tells the user to log in next.
+4. Login authenticates the user, regenerates the session, and returns the authenticated user.
+5. Frontend stores only UI state. Auth remains server-side.
+6. Logout clears the server session and returns success.
 
 ## Response Conventions
 
@@ -94,9 +96,9 @@ It intentionally excludes Version 2 features:
 ```json
 {
   "id": 1,
+  "name": "Alice Example",
   "username": "alice",
-  "email": "alice@example.com",
-  "created_at": "2026-06-11T10:00:00Z"
+  "email": "alice@example.com"
 }
 ```
 
@@ -209,12 +211,13 @@ It intentionally excludes Version 2 features:
 
 ### `POST /register`
 
-Creates a new user account and authenticates the new user.
+Creates a new user account. This endpoint does not authenticate the new user.
 
 Request:
 
 ```json
 {
+  "name": "Alice Example",
   "username": "alice",
   "email": "alice@example.com",
   "password": "secret123",
@@ -224,6 +227,7 @@ Request:
 
 Validation:
 
+- `name`: required, string, max 255
 - `username`: required, string, min 3, max 30, unique
 - `email`: required, valid email, unique
 - `password`: required, confirmed, min 8
@@ -233,8 +237,10 @@ Response:
 ```json
 {
   "data": {
+    "message": "Registration successful. Please log in.",
     "user": {
       "id": 1,
+      "name": "Alice Example",
       "username": "alice",
       "email": "alice@example.com"
     }
@@ -265,8 +271,10 @@ Response:
 ```json
 {
   "data": {
+    "message": "Login successful.",
     "user": {
       "id": 1,
+      "name": "Alice Example",
       "username": "alice",
       "email": "alice@example.com"
     }
@@ -363,12 +371,12 @@ Response:
 ```json
 {
   "data": {
-    "message": "Logged out."
+    "message": "Logged out successfully."
   }
 }
 ```
 
-### `GET /me`
+### `GET /api/me`
 
 Returns the currently authenticated user.
 
@@ -378,6 +386,7 @@ Response:
 {
   "data": {
     "id": 1,
+    "name": "Alice Example",
     "username": "alice",
     "email": "alice@example.com"
   }

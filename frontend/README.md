@@ -1,16 +1,43 @@
-# React + Vite
+# SkillSwap Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This React + Vite frontend includes the Milestone 3 authentication shell for SkillSwap.
 
-Currently, two official plugins are available:
+## Local environment
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Create `frontend/.env` from `frontend/.env.example`:
 
-## React Compiler
+```env
+VITE_API_BASE_URL=http://localhost:8000
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run the frontend
 
-## Expanding the ESLint configuration
+```bash
+cd frontend
+npm run dev -- --host localhost --port 5173
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Frontend checks
+
+```bash
+cd frontend
+npm run lint
+npm run build
+```
+
+## Auth flow
+
+- Public routes: `/`, `/login`, `/register`
+- Protected route: `/dashboard`
+- App boot checks `GET /api/me`
+- Register sends the user back to `/login` with a success message
+- Login updates React auth state and redirects to `/dashboard`
+- Logout clears auth state and redirects to `/`
+
+## HTTP behavior
+
+- Uses native `fetch` only
+- Sends `credentials: 'include'` on API requests
+- Fetches `/sanctum/csrf-cookie` before register, login, and logout
+- Reads the `XSRF-TOKEN` cookie and sends `X-XSRF-TOKEN`
+- Handles `401`, `419`, and validation errors with focused UI messages

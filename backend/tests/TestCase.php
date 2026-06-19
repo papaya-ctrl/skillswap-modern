@@ -16,5 +16,6 @@ abstract class TestCase extends BaseTestCase
 
         Assert::assertSame('mysql', config('database.default'));
         Assert::assertSame('skillswap_modern_test', config('database.connections.mysql.database'));
+        Assert::assertFileDoesNotExist(base_path('database/database.sqlite'));
     }
 }
