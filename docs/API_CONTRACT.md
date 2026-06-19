@@ -126,6 +126,7 @@ It intentionally excludes Version 2 features:
   "updated_at": "2026-06-11T10:00:00Z",
   "author": {
     "id": 2,
+    "name": "Bob Example",
     "username": "bob"
   },
   "category": {
@@ -135,8 +136,7 @@ It intentionally excludes Version 2 features:
   },
   "permissions": {
     "can_edit": false,
-    "can_delete": false,
-    "can_message": true
+    "can_delete": false
   }
 }
 ```
@@ -282,7 +282,7 @@ Response:
 }
 ```
 
-### `GET /categories`
+### `GET /api/categories`
 
 Returns the six V1 categories.
 
@@ -300,7 +300,7 @@ Response:
 }
 ```
 
-### `GET /posts`
+### `GET /api/posts`
 
 Returns the public feed with normal pagination.
 
@@ -330,9 +330,9 @@ Response:
 }
 ```
 
-### `GET /posts/{post}`
+### `GET /api/posts/{post}`
 
-Returns one post with its category, author, and threaded comments.
+Returns one public post with its category, author, and owner-only permissions.
 
 Authorization:
 
@@ -345,7 +345,24 @@ Response:
   "data": {
     "id": 10,
     "title": "Need help learning JavaScript basics",
-    "comments": []
+    "description": "Looking for beginner-friendly tutoring.",
+    "post_type": "request",
+    "payment_type": "exchange",
+    "image_url": null,
+    "author": {
+      "id": 2,
+      "name": "Bob Example",
+      "username": "bob"
+    },
+    "category": {
+      "id": 1,
+      "name": "IT & Programming",
+      "slug": "it-programming"
+    },
+    "permissions": {
+      "can_edit": false,
+      "can_delete": false
+    }
   }
 }
 ```
@@ -393,7 +410,7 @@ Response:
 }
 ```
 
-### `POST /posts`
+### `POST /api/posts`
 
 Creates a new post.
 
@@ -409,15 +426,6 @@ Request:
 }
 ```
 
-Multipart fields:
-
-- `title`
-- `description`
-- `post_type`
-- `payment_type`
-- `category_id`
-- `image` optional
-
 Validation:
 
 - `title`: required, string, max 120
@@ -425,9 +433,21 @@ Validation:
 - `post_type`: required, in `offer,request`
 - `payment_type`: required, in `free,paid,exchange`
 - `category_id`: required, exists
-- `image`: nullable, image, max 5120 KB
 
-### `PUT /posts/{post}`
+Response:
+
+```json
+{
+  "data": {
+    "message": "Post created successfully.",
+    "post": {
+      "id": 10
+    }
+  }
+}
+```
+
+### `PUT /api/posts/{post}`
 
 Updates a post.
 
@@ -439,7 +459,20 @@ Validation:
 
 - Same as create
 
-### `DELETE /posts/{post}`
+Response:
+
+```json
+{
+  "data": {
+    "message": "Post updated successfully.",
+    "post": {
+      "id": 10
+    }
+  }
+}
+```
+
+### `DELETE /api/posts/{post}`
 
 Deletes a post.
 
@@ -452,7 +485,7 @@ Response:
 ```json
 {
   "data": {
-    "message": "Post deleted."
+    "message": "Post deleted successfully."
   }
 }
 ```

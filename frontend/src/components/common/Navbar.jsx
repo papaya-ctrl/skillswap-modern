@@ -47,6 +47,12 @@ function Navbar() {
             {isAuthenticated ? (
               <>
                 <NavLink
+                  to="/posts/new"
+                  className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}
+                >
+                  Create post
+                </NavLink>
+                <NavLink
                   to="/dashboard"
                   className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}
                 >

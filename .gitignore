@@ -28,3 +28,4 @@ vendor/
 # Editors
 .vscode/
 .idea/
+.playwright-cli/

@@ -9,8 +9,8 @@ function DashboardPage() {
         <p className="hero-card__eyebrow">Protected page</p>
         <h1 className="page-heading">Hi, {user?.name ?? user?.username}.</h1>
         <p className="page-copy">
-          You are authenticated through Laravel Sanctum. This placeholder confirms
-          protected routing and restored session state for the new frontend.
+          You are authenticated through Laravel Sanctum. Use this page as a quick
+          checkpoint for the current signed-in session, then jump back into the post flow.
         </p>
       </div>
 

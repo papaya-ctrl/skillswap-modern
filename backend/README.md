@@ -1,20 +1,18 @@
 # SkillSwap Backend
 
-Laravel 12 powers the new SkillSwap API. Milestone 3 adds cookie-based SPA authentication with Laravel Sanctum for the React frontend.
+Laravel 12 powers the modern SkillSwap API. Milestone 4 adds the first full post flow on top of the existing Sanctum SPA authentication.
 
-## Auth endpoints
+## Current API areas
 
-- `POST /register`
-- `POST /login`
-- `POST /logout`
-- `GET /api/me`
-- `GET /sanctum/csrf-cookie`
+- Auth: `POST /register`, `POST /login`, `POST /logout`, `GET /api/me`, `GET /sanctum/csrf-cookie`
+- Categories: `GET /api/categories`
+- Posts: `GET /api/posts`, `GET /api/posts/{post}`, `POST /api/posts`, `PUT /api/posts/{post}`, `DELETE /api/posts/{post}`
 
 ## Local environment
 
 Copy `.env.example` to `.env` and set values for your machine.
 
-Required auth-related values:
+Required local values:
 
 - `APP_URL=http://localhost:8000`
 - `FRONTEND_URL=http://localhost:5173`
@@ -23,7 +21,7 @@ Required auth-related values:
 - `DB_DATABASE=skillswap_modern`
 - `SESSION_DRIVER=database`
 
-Testing uses `backend/.env.testing` and must point to `skillswap_modern_test`.
+Testing uses `backend/.env.testing` plus `phpunit.xml` and must point to `skillswap_modern_test`.
 
 ## Run the backend
 
@@ -32,19 +30,20 @@ cd backend
 /Applications/XAMPP/xamppfiles/bin/php artisan serve --host=localhost --port=8000
 ```
 
-## Run backend tests
+## Run backend checks
 
 ```bash
 cd backend
-/Applications/XAMPP/xamppfiles/bin/php artisan test tests/Feature/Auth
+/Applications/XAMPP/xamppfiles/bin/php artisan test tests/Feature/Api
 /Applications/XAMPP/xamppfiles/bin/php artisan test
+/Applications/XAMPP/xamppfiles/bin/php artisan route:list
 ```
 
-## Auth verification notes
+## Milestone 4 verification notes
 
-- The frontend must send requests with `credentials: 'include'`.
-- The frontend must fetch `/sanctum/csrf-cookie` before register, login, and logout.
-- `POST /register` creates the account but does not log the user in.
-- `POST /login` regenerates the session on success.
-- `POST /logout` invalidates the session and regenerates the CSRF token.
-- `GET /api/me` returns only `id`, `name`, `username`, and `email`.
+- Feed is public and supports `query`, `category_id`, `post_type`, and paginated `per_page`.
+- Feed ordering is newest first by `created_at desc`, then `id desc`.
+- Post create, update, and delete use `auth:sanctum`.
+- The authenticated user is always the post owner on create; `user_id` is never trusted from request input.
+- Edit and delete are protected by `PostPolicy`, so users cannot change another user's posts even if they tamper with the frontend.
+- `image_path` remains nullable and responses expose `image_url: null` until image upload is added in a later milestone.

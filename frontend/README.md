@@ -1,6 +1,6 @@
 # SkillSwap Frontend
 
-This React + Vite frontend includes the Milestone 3 authentication shell for SkillSwap.
+This React + Vite frontend now covers the Milestone 4 public feed and post CRUD flow on top of the Milestone 3 Sanctum auth shell.
 
 ## Local environment
 
@@ -25,19 +25,23 @@ npm run lint
 npm run build
 ```
 
-## Auth flow
+## Route overview
 
-- Public routes: `/`, `/login`, `/register`
-- Protected route: `/dashboard`
-- App boot checks `GET /api/me`
-- Register sends the user back to `/login` with a success message
-- Login updates React auth state and redirects to `/dashboard`
-- Logout clears auth state and redirects to `/`
+- Public: `/`, `/login`, `/register`, `/posts/:postId`
+- Protected: `/dashboard`, `/posts/new`, `/posts/:postId/edit`
+
+## Milestone 4 behavior
+
+- Home page is now the public feed with keyword, category, and post-type filters.
+- Feed uses normal pagination and links every card to a public post-detail page.
+- Authenticated users can create posts, edit their own posts, and delete their own posts.
+- Owner-only actions are hidden unless the API returns `permissions.can_edit` or `permissions.can_delete`.
+- Create, edit, and delete all stay inside the SPA and redirect after success.
 
 ## HTTP behavior
 
 - Uses native `fetch` only
 - Sends `credentials: 'include'` on API requests
-- Fetches `/sanctum/csrf-cookie` before register, login, and logout
+- Fetches `/sanctum/csrf-cookie` before register, login, logout, create, update, and delete requests
 - Reads the `XSRF-TOKEN` cookie and sends `X-XSRF-TOKEN`
-- Handles `401`, `419`, and validation errors with focused UI messages
+- Handles `401`, `419`, `422`, and owner-only `403` responses with focused UI states
