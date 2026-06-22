@@ -61,12 +61,19 @@ function CreatePostPage() {
   }
 
   if (isLoading) {
-    return <LoadingState title="Preparing the post form" message="Loading categories." />
+    return (
+      <LoadingState
+        eyebrow="Create post"
+        title="Preparing the post form"
+        message="Loading categories."
+      />
+    )
   }
 
   if (error && categories.length === 0) {
     return (
       <ErrorState
+        eyebrow={error.status === 0 ? 'Network issue' : 'Post form unavailable'}
         title="Unable to start a post"
         message={error.message}
         actionLabel="Back to feed"
@@ -78,6 +85,7 @@ function CreatePostPage() {
   return (
     <section className="auth-layout">
       <div className="auth-card auth-card--wide">
+        <p className="hero-card__eyebrow">Create post</p>
         <h1>Create a post</h1>
         <p>Share a skill you can offer or ask the community for focused help.</p>
         <PostForm

@@ -56,12 +56,19 @@ function InboxPage() {
   }
 
   if (isLoading && !conversations.length) {
-    return <LoadingState title="Loading inbox" message="Gathering your latest SkillSwap conversations." />
+    return (
+      <LoadingState
+        eyebrow="Inbox"
+        title="Loading inbox"
+        message="Gathering your latest SkillSwap conversations."
+      />
+    )
   }
 
   if (error && !conversations.length) {
     return (
       <ErrorState
+        eyebrow={error.status === 0 ? 'Network issue' : 'Inbox unavailable'}
         title="Unable to load inbox"
         message={error.message}
         actionLabel="Try again"
@@ -82,12 +89,23 @@ function InboxPage() {
         </div>
       </header>
 
-      {error ? <p className="form__message">{error.message}</p> : null}
+      {error ? (
+        <ErrorState
+          compact
+          eyebrow={error.status === 0 ? 'Network issue' : 'Refresh failed'}
+          title="Could not refresh the inbox"
+          message={error.message}
+          actionLabel="Try again"
+          onAction={handleRetry}
+        />
+      ) : null}
 
       {conversations.length ? (
         <ConversationList conversations={conversations} />
       ) : (
         <EmptyState
+          compact
+          eyebrow="Inbox"
           title="No conversations yet"
           message="Start from a post detail page when you want to contact another SkillSwap member."
         />

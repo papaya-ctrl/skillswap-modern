@@ -1,6 +1,8 @@
 # SkillSwap Frontend
 
-This React + Vite frontend now covers Milestone 6 inbox and messaging on top of the existing Sanctum auth shell, public feed, profiles, posts, and threaded comments.
+This React + Vite frontend now represents the Milestone 7 V1 UI polish pass for SkillSwap Modern.
+
+For the full project setup path, start with the root [README.md](/Applications/XAMPP/xamppfiles/htdocs/skillswap-modern/README.md).
 
 ## Local environment
 
@@ -30,7 +32,7 @@ npm run build
 - Public: `/`, `/login`, `/register`, `/posts/:postId`, `/profiles/:userId`
 - Protected: `/dashboard`, `/settings/profile`, `/posts/new`, `/posts/:postId/edit`, `/inbox`, `/inbox/:conversationId`
 
-## Milestone 6 behavior
+## Current route overview
 
 - Home page is now the public feed with keyword, category, and post-type filters.
 - Feed uses normal pagination and links every card to a public post-detail page.
@@ -45,7 +47,14 @@ npm run build
 - `/inbox` lists the authenticated user’s conversations with last-message previews, unread counts, and related post context.
 - `/inbox/:conversationId` loads the conversation header and full message thread, then marks incoming unread messages as read after the page opens.
 - The inbox is intentionally page-driven for this milestone: no polling, realtime updates, notifications, or websocket behavior.
-- `403` API responses are now handled explicitly so forbidden inbox routes show a clear access message instead of a generic failure.
+- `403` API responses are handled explicitly so forbidden inbox routes show a clear access message instead of a generic failure.
+
+## Milestone 7 polish focus
+
+- Responsive layout review on mobile and desktop
+- Consistent loading, empty, and error states
+- Clear guest redirects and owner-only messaging
+- Final README accuracy and portfolio screenshot guidance
 
 ## HTTP behavior
 

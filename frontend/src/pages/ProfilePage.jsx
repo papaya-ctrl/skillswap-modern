@@ -54,12 +54,19 @@ function ProfilePageContent({ userId }) {
   }, [page, userId])
 
   if (isLoading) {
-    return <LoadingState title="Loading profile" message="Pulling this member's public profile." />
+    return (
+      <LoadingState
+        eyebrow="Public profile"
+        title="Loading profile"
+        message="Pulling this member's public profile."
+      />
+    )
   }
 
   if (error || !profile) {
     return (
       <ErrorState
+        eyebrow={error?.status === 404 ? 'Profile not found' : 'Profile unavailable'}
         title="Unable to load this profile"
         message={error?.message ?? 'The requested profile could not be found.'}
         actionLabel="Back to feed"
@@ -83,6 +90,8 @@ function ProfilePageContent({ userId }) {
         />
       ) : (
         <EmptyState
+          compact
+          eyebrow="Public posts"
           title="No public posts yet"
           message="This user has not published any SkillSwap posts yet."
         />

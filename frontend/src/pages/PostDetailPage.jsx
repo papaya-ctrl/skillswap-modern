@@ -200,12 +200,19 @@ function PostDetailPage() {
   }
 
   if (isLoading) {
-    return <LoadingState title="Loading post" message="Pulling the latest post details." />
+    return (
+      <LoadingState
+        eyebrow="Post detail"
+        title="Loading post"
+        message="Pulling the latest post details."
+      />
+    )
   }
 
   if (error || !post) {
     return (
       <ErrorState
+        eyebrow={error?.status === 404 ? 'Post not found' : 'Post unavailable'}
         title="Unable to load this post"
         message={error?.message ?? 'The post could not be found.'}
         actionLabel="Back to feed"
@@ -304,9 +311,16 @@ function PostDetailPage() {
           )}
 
           {isLoadingComments ? (
-            <LoadingState title="Loading comments" message="Fetching the latest discussion for this post." />
+            <LoadingState
+              compact
+              eyebrow="Discussion"
+              title="Loading comments"
+              message="Fetching the latest discussion for this post."
+            />
           ) : commentError && !comments.length ? (
             <ErrorState
+              compact
+              eyebrow={commentError.status === 0 ? 'Network issue' : 'Comments unavailable'}
               title="Unable to load comments"
               message={commentError.message}
               actionLabel="Try again"
@@ -322,6 +336,8 @@ function PostDetailPage() {
             />
           ) : (
             <EmptyState
+              compact
+              eyebrow="Discussion"
               title="No comments yet"
               message="Be the first person to start the discussion on this post."
             />

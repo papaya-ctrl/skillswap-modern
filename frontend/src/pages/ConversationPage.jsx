@@ -142,7 +142,13 @@ function ConversationPage() {
   }
 
   if (isLoading) {
-    return <LoadingState title="Loading conversation" message="Opening your private inbox thread." />
+    return (
+      <LoadingState
+        eyebrow="Conversation"
+        title="Loading conversation"
+        message="Opening your private inbox thread."
+      />
+    )
   }
 
   if (loadError || !conversation) {
@@ -152,6 +158,7 @@ function ConversationPage() {
 
     return (
       <ErrorState
+        eyebrow={loadError?.type === 'forbidden' ? 'Access denied' : 'Conversation unavailable'}
         title="Conversation unavailable"
         message={forbiddenMessage}
         actionLabel={loadError?.type === 'forbidden' ? 'Back to inbox' : 'Try again'}
@@ -192,13 +199,24 @@ function ConversationPage() {
         </div>
       </article>
 
-      {pageError ? <p className="form__message">{pageError.message}</p> : null}
+      {pageError ? (
+        <ErrorState
+          compact
+          eyebrow={pageError.type === 'forbidden' ? 'Access denied' : 'Conversation issue'}
+          title="Could not update this conversation"
+          message={pageError.message}
+          actionLabel="Try again"
+          onAction={handleRetry}
+        />
+      ) : null}
 
       <section className="panel stack">
         {messages.length ? (
           <MessageList messages={messages} />
         ) : (
           <EmptyState
+            compact
+            eyebrow="Conversation"
             title="No messages yet"
             message="Start the conversation with a clear introduction and a helpful next step."
           />

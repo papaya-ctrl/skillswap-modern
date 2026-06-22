@@ -82,12 +82,19 @@ function EditPostPage() {
   }
 
   if (isLoading) {
-    return <LoadingState title="Loading post" message="Preparing the edit form." />
+    return (
+      <LoadingState
+        eyebrow="Edit post"
+        title="Loading post"
+        message="Preparing the edit form."
+      />
+    )
   }
 
   if (error || !post) {
     return (
       <ErrorState
+        eyebrow={error?.status === 403 ? 'Access denied' : 'Post unavailable'}
         title="Unable to edit this post"
         message={error?.message ?? 'The post could not be found.'}
         actionLabel="Back to feed"
@@ -99,6 +106,7 @@ function EditPostPage() {
   return (
     <section className="auth-layout">
       <div className="auth-card auth-card--wide">
+        <p className="hero-card__eyebrow">Edit post</p>
         <h1>Edit your post</h1>
         <p>Update the details so other learners know exactly what you need or offer.</p>
         <PostForm

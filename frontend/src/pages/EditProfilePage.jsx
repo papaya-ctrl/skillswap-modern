@@ -67,12 +67,19 @@ function EditProfilePage() {
   }
 
   if (isLoading) {
-    return <LoadingState title="Loading profile editor" message="Preparing your current profile details." />
+    return (
+      <LoadingState
+        eyebrow="Profile settings"
+        title="Loading profile editor"
+        message="Preparing your current profile details."
+      />
+    )
   }
 
   if (error && !profile) {
     return (
       <ErrorState
+        eyebrow={error.status === 0 ? 'Network issue' : 'Profile unavailable'}
         title="Unable to load your profile"
         message={error.message}
       />

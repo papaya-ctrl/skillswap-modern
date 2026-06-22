@@ -23,11 +23,17 @@ body,
 
 body {
   min-width: 320px;
+  color: #172033;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }
 
 button,
@@ -39,6 +45,13 @@ textarea {
 
 button {
   cursor: pointer;
+}
+
+button,
+input,
+select,
+textarea {
+  min-width: 0;
 }
 
 .app-shell {
@@ -75,6 +88,7 @@ button {
   align-items: center;
   gap: 0.75rem;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 .navbar__mark {
@@ -89,6 +103,17 @@ button {
   box-shadow: 0 10px 30px rgba(45, 125, 210, 0.28);
 }
 
+.navbar__panel {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: end;
+}
+
+.navbar__menu {
+  display: grid;
+  gap: 0.75rem;
+}
+
 .navbar__links {
   display: flex;
   align-items: center;
@@ -100,8 +125,13 @@ button {
 .navbar__link,
 .button,
 .button--ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
   padding: 0.7rem 1rem;
+  border: 1px solid transparent;
+  text-align: center;
   transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
 }
 
@@ -133,13 +163,19 @@ button {
   color: #172033;
 }
 
+.navbar__menu-toggle {
+  display: none;
+}
+
 .button--ghost:disabled {
   opacity: 0.75;
 }
 
 .navbar__status {
+  margin: 0;
   color: #5c667a;
   font-size: 0.95rem;
+  text-align: right;
 }
 
 .navbar__error {
@@ -232,6 +268,11 @@ button {
   padding: 2rem;
 }
 
+.auth-card__footer {
+  margin-top: 1.25rem;
+  color: #5c667a;
+}
+
 .form {
   display: grid;
   gap: 1rem;
@@ -292,20 +333,52 @@ button {
   color: #a53a3a;
 }
 
+.form__message,
+.form__success {
+  border-radius: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+.form__message {
+  background: rgba(165, 58, 58, 0.08);
+  border: 1px solid rgba(165, 58, 58, 0.14);
+}
+
 .form__success {
   margin: 0;
   font-size: 0.95rem;
   color: #1e6a42;
+  background: rgba(30, 106, 66, 0.08);
+  border: 1px solid rgba(30, 106, 66, 0.14);
 }
 
 .state-card {
   margin: 5rem auto;
   text-align: center;
+  max-width: 42rem;
+}
+
+.state-card__eyebrow {
+  margin: 0 0 0.65rem;
+  color: #2d7dd2;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.state-card--compact {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  text-align: left;
+  padding: 1.4rem;
 }
 
 .state-card__actions {
   margin-top: 1.25rem;
   display: flex;
+  gap: 0.75rem;
   justify-content: center;
 }
 
@@ -387,6 +460,7 @@ button {
   padding: 1.5rem;
   display: grid;
   gap: 1rem;
+  min-width: 0;
 }
 
 .post-card__category {
@@ -472,6 +546,17 @@ button {
 .profile-edit__actions,
 .dashboard-card__actions {
   margin-top: 1.25rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.dashboard-list {
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+  color: #4b5568;
 }
 
 .comments-panel {
@@ -574,6 +659,7 @@ button {
   display: grid;
   gap: 0.9rem;
   transition: transform 160ms ease, box-shadow 160ms ease;
+  min-width: 0;
 }
 
 .conversation-list-item:hover {
@@ -713,6 +799,10 @@ button {
   .post-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 640px) {
@@ -721,9 +811,38 @@ button {
     flex-direction: column;
   }
 
+  .navbar__panel {
+    width: 100%;
+    justify-items: stretch;
+  }
+
+  .navbar__menu-toggle {
+    display: inline-flex;
+    width: fit-content;
+  }
+
+  .navbar__menu {
+    display: none;
+    width: 100%;
+  }
+
+  .navbar__menu--open {
+    display: grid;
+  }
+
   .navbar__links {
     width: 100%;
     justify-content: flex-start;
+    flex-direction: column;
+  }
+
+  .navbar__links > * {
+    width: 100%;
+  }
+
+  .navbar__status,
+  .navbar__error {
+    text-align: left;
   }
 
   .auth-card,
@@ -741,6 +860,23 @@ button {
     flex-direction: column;
   }
 
+  .hero-card__actions,
+  .state-card__actions,
+  .comment-form__actions,
+  .comment-card__actions,
+  .message-composer__actions,
+  .post-card__actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .button,
+  .button--ghost,
+  .navbar__link,
+  .pagination__page {
+    width: 100%;
+  }
+
   .profile-header__actions,
   .comment-login-prompt,
   .comment-card__header,
@@ -752,6 +888,10 @@ button {
   .comment-thread--nested {
     margin-left: 0.75rem;
     padding-left: 0.75rem;
+  }
+
+  .pagination__pages {
+    width: 100%;
   }
 
   .message-bubble {

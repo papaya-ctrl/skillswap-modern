@@ -153,12 +153,19 @@ function HomePage() {
   }
 
   if (isLoadingCategories && categories.length === 0) {
-    return <LoadingState title="Loading categories" message="Preparing the SkillSwap feed." />
+    return (
+      <LoadingState
+        eyebrow="Feed setup"
+        title="Loading categories"
+        message="Preparing the SkillSwap feed."
+      />
+    )
   }
 
   if (pageError && !posts.length && !isLoadingPosts) {
     return (
       <ErrorState
+        eyebrow={pageError.status === 0 ? 'Network issue' : 'Feed unavailable'}
         title="Unable to load posts"
         message={pageError.message}
         actionLabel="Try again"
@@ -201,11 +208,23 @@ function HomePage() {
       />
 
       {pageError && posts.length ? (
-        <p className="form__message">{pageError.message}</p>
+        <ErrorState
+          compact
+          eyebrow={pageError.status === 0 ? 'Network issue' : 'Update failed'}
+          title="Could not refresh the feed"
+          message={pageError.message}
+          actionLabel="Try again"
+          onAction={() => reloadPosts()}
+        />
       ) : null}
 
       {isLoadingPosts ? (
-        <LoadingState title="Loading posts" message="Fetching the latest skill swaps." />
+        <LoadingState
+          compact
+          eyebrow="Refreshing feed"
+          title="Loading posts"
+          message="Fetching the latest skill swaps."
+        />
       ) : posts.length ? (
         <>
           <div className="feed-toolbar">
@@ -224,6 +243,8 @@ function HomePage() {
         </>
       ) : (
         <EmptyState
+          compact
+          eyebrow="No matches"
           title="No posts match these filters"
           message="Try broadening the search, switching categories, or creating the first post in this topic."
           actionLabel={hasActiveFilters ? 'Clear filters' : undefined}

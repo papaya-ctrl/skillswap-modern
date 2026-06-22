@@ -1,6 +1,17 @@
-function ErrorState({ title = 'Something went wrong', message, actionLabel, onAction }) {
+function ErrorState({
+  title = 'Something went wrong',
+  message,
+  actionLabel,
+  onAction,
+  eyebrow = 'Error',
+  compact = false,
+}) {
   return (
-    <section className="state-card" role="alert">
+    <section
+      className={`state-card${compact ? ' state-card--compact' : ''}`}
+      role="alert"
+    >
+      <p className="state-card__eyebrow">{eyebrow}</p>
       <h1>{title}</h1>
       <p>{message}</p>
 

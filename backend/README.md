@@ -1,6 +1,8 @@
 # SkillSwap Backend
 
-Laravel 12 powers the modern SkillSwap API. Milestone 6 adds a private inbox and basic messaging on top of the existing Sanctum SPA authentication, public profiles, posts, and threaded comments.
+Laravel 12 powers the SkillSwap Modern API. Milestone 7 focuses on V1 polish, documentation, and final verification on top of the existing auth, feed, profile, comments, and inbox flows.
+
+For the full project setup path, start with the root [README.md](/Applications/XAMPP/xamppfiles/htdocs/skillswap-modern/README.md).
 
 ## Current API areas
 
@@ -37,14 +39,10 @@ cd backend
 
 ```bash
 cd backend
-/Applications/XAMPP/xamppfiles/bin/php artisan test tests/Feature/Api
-/Applications/XAMPP/xamppfiles/bin/php artisan test tests/Feature/Api/ConversationApiTest.php
 /Applications/XAMPP/xamppfiles/bin/php artisan test
-/Applications/XAMPP/xamppfiles/bin/php artisan route:list --path=api/conversations
-/Applications/XAMPP/xamppfiles/bin/php artisan route:list
 ```
 
-## Milestone 6 verification notes
+## Current API areas
 
 - Feed is public and supports `query`, `category_id`, `post_type`, and paginated `per_page`.
 - Feed ordering is newest first by `created_at desc`, then `id desc`.
@@ -61,3 +59,9 @@ cd backend
 - Conversation read, view, and send rules are enforced by `ConversationPolicy`, so non-participants receive `403` even if they tamper with client requests.
 - Message creation accepts only `body`; `sender_id` and `recipient_id` are always derived on the server from the authenticated user and the conversation participants.
 - Read tracking only marks unread messages addressed to the current user in the current conversation.
+
+## Milestone 7 verification notes
+
+- Continue using MySQL databases `skillswap_modern` and `skillswap_modern_test`.
+- Do not introduce SQLite files in `backend/database/`.
+- Keep public API shapes stable while polishing frontend state handling and documentation.
