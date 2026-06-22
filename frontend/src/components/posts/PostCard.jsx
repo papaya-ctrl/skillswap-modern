@@ -34,7 +34,11 @@ function PostCard({ post, onDelete, isDeleting = false }) {
         <dl className="post-card__details">
           <div>
             <dt>Posted by</dt>
-            <dd>{post.author.name} (@{post.author.username})</dd>
+            <dd>
+              <Link to={`/profiles/${post.author.id}`}>
+                {post.author.name} (@{post.author.username})
+              </Link>
+            </dd>
           </div>
           <div>
             <dt>Updated</dt>
@@ -54,7 +58,7 @@ function PostCard({ post, onDelete, isDeleting = false }) {
           </Link>
         ) : null}
 
-        {post.permissions.can_delete ? (
+        {post.permissions.can_delete && onDelete ? (
           <button
             type="button"
             className="button--ghost button--danger"

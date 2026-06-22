@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 
 function DashboardPage() {
@@ -22,6 +23,15 @@ function DashboardPage() {
           <li>Username: @{user?.username}</li>
           <li>Email: {user?.email}</li>
         </ul>
+
+        <div className="hero-card__actions dashboard-card__actions">
+          <Link className="button" to="/settings/profile">
+            Edit profile
+          </Link>
+          <Link className="button--ghost" to={`/profiles/${user?.id}`}>
+            View public profile
+          </Link>
+        </div>
       </div>
     </section>
   )

@@ -47,6 +47,12 @@ function Navbar() {
             {isAuthenticated ? (
               <>
                 <NavLink
+                  to={`/profiles/${user.id}`}
+                  className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}
+                >
+                  Profile
+                </NavLink>
+                <NavLink
                   to="/posts/new"
                   className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}
                 >

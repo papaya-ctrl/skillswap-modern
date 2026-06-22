@@ -6,11 +6,13 @@ import ProtectedRoute from './components/common/ProtectedRoute.jsx'
 import { useAuth } from './hooks/useAuth.js'
 import CreatePostPage from './pages/CreatePostPage.jsx'
 import DashboardPage from './pages/DashboardPage.jsx'
+import EditProfilePage from './pages/EditProfilePage.jsx'
 import EditPostPage from './pages/EditPostPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import PostDetailPage from './pages/PostDetailPage.jsx'
+import ProfilePage from './pages/ProfilePage.jsx'
 import RegisterPage from './pages/RegisterPage.jsx'
 
 function App() {
@@ -36,11 +38,20 @@ function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="posts/:postId" element={<PostDetailPage />} />
+        <Route path="profiles/:userId" element={<ProfilePage />} />
         <Route
           path="dashboard"
           element={(
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="settings/profile"
+          element={(
+            <ProtectedRoute>
+              <EditProfilePage />
             </ProtectedRoute>
           )}
         />

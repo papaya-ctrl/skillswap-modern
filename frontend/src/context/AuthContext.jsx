@@ -49,6 +49,14 @@ export function AuthProvider({ children }) {
     return authService.register(payload)
   }
 
+  async function refreshUser() {
+    const currentUser = await authService.getMe()
+    setUser(currentUser)
+    setBootError(null)
+
+    return currentUser
+  }
+
   async function login(payload) {
     const data = await authService.login(payload)
 
@@ -79,6 +87,7 @@ export function AuthProvider({ children }) {
     isLoading,
     login,
     logout,
+    refreshUser,
     register,
     user,
   }

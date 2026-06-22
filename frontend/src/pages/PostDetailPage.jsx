@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import CommentForm from '../components/comments/CommentForm.jsx'
+import CommentThread from '../components/comments/CommentThread.jsx'
+import EmptyState from '../components/common/EmptyState.jsx'
 import ErrorState from '../components/common/ErrorState.jsx'
 import LoadingState from '../components/common/LoadingState.jsx'
+import { useAuth } from '../hooks/useAuth.js'
+import * as commentService from '../services/api/commentService.js'
 import * as postService from '../services/api/postService.js'
 
 function formatDate(value) {
@@ -13,11 +18,18 @@ function formatDate(value) {
 
 function PostDetailPage() {
   const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
   const { postId } = useParams()
   const [post, setPost] = useState(null)
+  const [comments, setComments] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isLoadingComments, setIsLoadingComments] = useState(true)
+  const [commentError, setCommentError] = useState(null)
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false)
+  const [activeReplyParentId, setActiveReplyParentId] = useState(null)
+  const [activeDeleteCommentId, setActiveDeleteCommentId] = useState(null)
 
   useEffect(() => {
     let isActive = true
@@ -50,6 +62,38 @@ function PostDetailPage() {
     }
   }, [postId])
 
+  useEffect(() => {
+    let isActive = true
+
+    async function loadComments() {
+      setIsLoadingComments(true)
+      setCommentError(null)
+      setComments([])
+
+      try {
+        const response = await commentService.getComments(postId)
+
+        if (isActive) {
+          setComments(response)
+        }
+      } catch (requestError) {
+        if (isActive) {
+          setCommentError(requestError)
+        }
+      } finally {
+        if (isActive) {
+          setIsLoadingComments(false)
+        }
+      }
+    }
+
+    loadComments()
+
+    return () => {
+      isActive = false
+    }
+  }, [postId])
+
   async function handleDelete() {
     if (!post) {
       return
@@ -71,6 +115,85 @@ function PostDetailPage() {
       setError(requestError)
     } finally {
       setIsDeleting(false)
+    }
+  }
+
+  async function reloadComments() {
+    const response = await commentService.getComments(postId)
+    setComments(response)
+  }
+
+  async function handleRetryComments() {
+    setIsLoadingComments(true)
+    setCommentError(null)
+
+    try {
+      await reloadComments()
+    } catch (requestError) {
+      setCommentError(requestError)
+    } finally {
+      setIsLoadingComments(false)
+    }
+  }
+
+  async function handleCreateComment(body) {
+    setIsSubmittingComment(true)
+    setCommentError(null)
+
+    try {
+      await commentService.createComment(postId, { body })
+      await reloadComments()
+    } catch (requestError) {
+      if (requestError.type === 'validation') {
+        throw requestError
+      }
+
+      setCommentError(requestError)
+      throw requestError
+    } finally {
+      setIsSubmittingComment(false)
+    }
+  }
+
+  async function handleReply(parentId, body) {
+    setActiveReplyParentId(parentId)
+    setCommentError(null)
+
+    try {
+      await commentService.createComment(postId, {
+        body,
+        parent_id: parentId,
+      })
+      await reloadComments()
+    } catch (requestError) {
+      if (requestError.type === 'validation') {
+        throw requestError
+      }
+
+      setCommentError(requestError)
+      throw requestError
+    } finally {
+      setActiveReplyParentId(null)
+    }
+  }
+
+  async function handleDeleteComment(comment) {
+    const confirmed = window.confirm('Delete this comment? Replies will remain visible.')
+
+    if (!confirmed) {
+      return
+    }
+
+    setActiveDeleteCommentId(comment.id)
+    setCommentError(null)
+
+    try {
+      await commentService.deleteComment(comment.id)
+      await reloadComments()
+    } catch (requestError) {
+      setCommentError(requestError)
+    } finally {
+      setActiveDeleteCommentId(null)
     }
   }
 
@@ -108,8 +231,12 @@ function PostDetailPage() {
         <dl className="detail-grid">
           <div className="panel">
             <h2>Author</h2>
-            <p>{post.author.name}</p>
-            <p>@{post.author.username}</p>
+            <p>
+              <Link to={`/profiles/${post.author.id}`}>{post.author.name}</Link>
+            </p>
+            <p>
+              <Link to={`/profiles/${post.author.id}`}>@{post.author.username}</Link>
+            </p>
           </div>
           <div className="panel">
             <h2>Updated</h2>
@@ -141,6 +268,59 @@ function PostDetailPage() {
           ) : null}
         </div>
       </article>
+
+      <section className="panel comments-panel">
+        <div className="stack">
+          <div className="stack stack--tiny">
+            <p className="hero-card__eyebrow">Discussion</p>
+            <h2 className="comments-panel__title">Comments</h2>
+            <p className="page-copy">
+              Ask a follow-up question, offer help, or add context for this post.
+            </p>
+          </div>
+
+          {isAuthenticated ? (
+            <CommentForm
+              onSubmit={handleCreateComment}
+              isSubmitting={isSubmittingComment}
+              formError={commentError?.message ?? ''}
+              submitLabel="Post comment"
+              placeholder="Share a helpful reply or question."
+            />
+          ) : (
+            <div className="comment-login-prompt">
+              <p>Log in to join the conversation.</p>
+              <Link className="button" to="/login">
+                Login to comment
+              </Link>
+            </div>
+          )}
+
+          {isLoadingComments ? (
+            <LoadingState title="Loading comments" message="Fetching the latest discussion for this post." />
+          ) : commentError && !comments.length ? (
+            <ErrorState
+              title="Unable to load comments"
+              message={commentError.message}
+              actionLabel="Try again"
+              onAction={handleRetryComments}
+            />
+          ) : comments.length ? (
+            <CommentThread
+              comments={comments}
+              onDelete={handleDeleteComment}
+              onReply={handleReply}
+              activeReplyParentId={activeReplyParentId}
+              activeDeleteCommentId={activeDeleteCommentId}
+            />
+          ) : (
+            <EmptyState
+              title="No comments yet"
+              message="Be the first person to start the discussion on this post."
+            />
+          )}
+        </div>
+      </section>
     </section>
   )
 }
