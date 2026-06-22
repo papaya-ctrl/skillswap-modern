@@ -5,10 +5,12 @@ import LoadingState from './components/common/LoadingState.jsx'
 import ProtectedRoute from './components/common/ProtectedRoute.jsx'
 import { useAuth } from './hooks/useAuth.js'
 import CreatePostPage from './pages/CreatePostPage.jsx'
+import ConversationPage from './pages/ConversationPage.jsx'
 import DashboardPage from './pages/DashboardPage.jsx'
 import EditProfilePage from './pages/EditProfilePage.jsx'
 import EditPostPage from './pages/EditPostPage.jsx'
 import HomePage from './pages/HomePage.jsx'
+import InboxPage from './pages/InboxPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import PostDetailPage from './pages/PostDetailPage.jsx'
@@ -44,6 +46,22 @@ function App() {
           element={(
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="inbox"
+          element={(
+            <ProtectedRoute>
+              <InboxPage />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="inbox/:conversationId"
+          element={(
+            <ProtectedRoute>
+              <ConversationPage />
             </ProtectedRoute>
           )}
         />

@@ -123,6 +123,14 @@ export async function request(path, options = {}) {
         })
       }
 
+      if (response.status === 403) {
+        throw createApiError({
+          message: data.message ?? 'You do not have permission to access this resource.',
+          status: 403,
+          type: 'forbidden',
+        })
+      }
+
       throw createApiError({
         message: data.message ?? 'Something went wrong while contacting the server.',
         status: response.status,

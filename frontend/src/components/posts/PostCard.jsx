@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth.js'
 
 function formatDate(value) {
   return new Intl.DateTimeFormat(undefined, {
@@ -8,9 +9,11 @@ function formatDate(value) {
 }
 
 function PostCard({ post, onDelete, isDeleting = false }) {
+  const { isAuthenticated, user } = useAuth()
   const excerpt = post.description.length > 180
     ? `${post.description.slice(0, 177)}...`
     : post.description
+  const isOwner = isAuthenticated && user?.id === post.author.id
 
   return (
     <article className="post-card">
@@ -52,13 +55,13 @@ function PostCard({ post, onDelete, isDeleting = false }) {
           View details
         </Link>
 
-        {post.permissions.can_edit ? (
+        {isOwner ? (
           <Link className="button--ghost" to={`/posts/${post.id}/edit`}>
             Edit
           </Link>
         ) : null}
 
-        {post.permissions.can_delete && onDelete ? (
+        {isOwner && onDelete ? (
           <button
             type="button"
             className="button--ghost button--danger"

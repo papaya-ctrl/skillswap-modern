@@ -1,6 +1,6 @@
 # SkillSwap Frontend
 
-This React + Vite frontend now covers Milestone 5 public profiles, profile editing, and threaded comments on top of the existing Sanctum auth shell and Milestone 4 post flow.
+This React + Vite frontend now covers Milestone 6 inbox and messaging on top of the existing Sanctum auth shell, public feed, profiles, posts, and threaded comments.
 
 ## Local environment
 
@@ -28,9 +28,9 @@ npm run build
 ## Route overview
 
 - Public: `/`, `/login`, `/register`, `/posts/:postId`, `/profiles/:userId`
-- Protected: `/dashboard`, `/settings/profile`, `/posts/new`, `/posts/:postId/edit`
+- Protected: `/dashboard`, `/settings/profile`, `/posts/new`, `/posts/:postId/edit`, `/inbox`, `/inbox/:conversationId`
 
-## Milestone 5 behavior
+## Milestone 6 behavior
 
 - Home page is now the public feed with keyword, category, and post-type filters.
 - Feed uses normal pagination and links every card to a public post-detail page.
@@ -41,6 +41,11 @@ npm run build
 - Authenticated users can edit their own profile from `/settings/profile`, then immediately refresh navbar and dashboard auth state.
 - Post detail pages load comments separately from the post, support threaded replies, and show a login prompt instead of a comment form for guests.
 - Comment delete actions are only shown when the API says the current user is allowed to moderate that comment.
+- Post detail pages now include a `Message owner` action for non-owners. Guests are redirected to login first, then returned to the same post page.
+- `/inbox` lists the authenticated user’s conversations with last-message previews, unread counts, and related post context.
+- `/inbox/:conversationId` loads the conversation header and full message thread, then marks incoming unread messages as read after the page opens.
+- The inbox is intentionally page-driven for this milestone: no polling, realtime updates, notifications, or websocket behavior.
+- `403` API responses are now handled explicitly so forbidden inbox routes show a clear access message instead of a generic failure.
 
 ## HTTP behavior
 

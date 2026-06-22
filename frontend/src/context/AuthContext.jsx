@@ -66,17 +66,26 @@ export function AuthProvider({ children }) {
   }
 
   async function logout() {
+    const previousUser = user
+
+    setUser(null)
+
     try {
       const data = await authService.logout()
-
-      setUser(null)
+      setBootError(null)
 
       return data
     } catch (error) {
       if (error.status === 401) {
         setUser(null)
+        setBootError(null)
+
+        return {
+          message: 'Logged out successfully.',
+        }
       }
 
+      setUser(previousUser)
       throw error
     }
   }

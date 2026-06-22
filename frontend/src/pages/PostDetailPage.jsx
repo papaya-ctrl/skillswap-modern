@@ -5,6 +5,7 @@ import CommentThread from '../components/comments/CommentThread.jsx'
 import EmptyState from '../components/common/EmptyState.jsx'
 import ErrorState from '../components/common/ErrorState.jsx'
 import LoadingState from '../components/common/LoadingState.jsx'
+import StartConversationButton from '../components/messages/StartConversationButton.jsx'
 import { useAuth } from '../hooks/useAuth.js'
 import * as commentService from '../services/api/commentService.js'
 import * as postService from '../services/api/postService.js'
@@ -18,7 +19,7 @@ function formatDate(value) {
 
 function PostDetailPage() {
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const { postId } = useParams()
   const [post, setPost] = useState(null)
   const [comments, setComments] = useState([])
@@ -30,6 +31,7 @@ function PostDetailPage() {
   const [isSubmittingComment, setIsSubmittingComment] = useState(false)
   const [activeReplyParentId, setActiveReplyParentId] = useState(null)
   const [activeDeleteCommentId, setActiveDeleteCommentId] = useState(null)
+  const isOwner = isAuthenticated && user?.id === post?.author.id
 
   useEffect(() => {
     let isActive = true
@@ -250,13 +252,18 @@ function PostDetailPage() {
             Back to feed
           </Link>
 
-          {post.permissions.can_edit ? (
+          <StartConversationButton
+            postId={post.id}
+            isOwner={isOwner}
+          />
+
+          {isOwner ? (
             <Link className="button" to={`/posts/${post.id}/edit`}>
               Edit post
             </Link>
           ) : null}
 
-          {post.permissions.can_delete ? (
+          {isOwner ? (
             <button
               type="button"
               className="button--ghost button--danger"

@@ -59,6 +59,12 @@ function Navbar() {
                   Create post
                 </NavLink>
                 <NavLink
+                  to="/inbox"
+                  className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}
+                >
+                  Inbox
+                </NavLink>
+                <NavLink
                   to="/dashboard"
                   className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}
                 >
