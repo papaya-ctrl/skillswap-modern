@@ -237,6 +237,12 @@ function PostDetailPage() {
           <p className="page-copy">{post.description}</p>
         </div>
 
+        {post.image_url ? (
+          <div className="post-detail__image">
+            <img src={post.image_url} alt={post.title} />
+          </div>
+        ) : null}
+
         <dl className="detail-grid">
           <div className="panel">
             <h2>Author</h2>

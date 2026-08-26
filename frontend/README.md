@@ -36,12 +36,13 @@ npm run build
 
 - Home page is now the public feed with keyword, category, and post-type filters.
 - Feed uses normal pagination and links every card to a public post-detail page.
-- Authenticated users can create posts, edit their own posts, and delete their own posts.
+- Authenticated users can create posts, edit their own posts, delete their own posts, and attach an optional JPG/PNG/WebP image up to 2 MB.
 - Owner-only actions are hidden unless the API returns `permissions.can_edit` or `permissions.can_delete`.
 - Create, edit, and delete all stay inside the SPA and redirect after success.
 - Public profile pages show safe public user fields plus paginated posts from that member only.
 - Authenticated users can edit their own profile from `/settings/profile`, then immediately refresh navbar and dashboard auth state.
 - Post detail pages load comments separately from the post, support threaded replies, and show a login prompt instead of a comment form for guests.
+- Post forms preview selected images with object URLs and use `FormData` only when uploading or replacing an image.
 - Comment delete actions are only shown when the API says the current user is allowed to moderate that comment.
 - Post detail pages now include a `Message owner` action for non-owners. Guests are redirected to login first, then returned to the same post page.
 - `/inbox` lists the authenticated user’s conversations with last-message previews, unread counts, and related post context.

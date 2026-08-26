@@ -25,6 +25,7 @@ Required local values:
 - `DB_CONNECTION=mysql`
 - `DB_DATABASE=skillswap_modern`
 - `SESSION_DRIVER=database`
+- `APP_URL` must match the backend URL so post image URLs are generated correctly.
 
 Testing uses `backend/.env.testing` plus `phpunit.xml` and must point to `skillswap_modern_test`.
 
@@ -33,6 +34,13 @@ Testing uses `backend/.env.testing` plus `phpunit.xml` and must point to `skills
 ```bash
 cd backend
 /Applications/XAMPP/xamppfiles/bin/php artisan serve --host=localhost --port=8000
+```
+
+If post images do not load locally, create the public storage link once:
+
+```bash
+cd backend
+/Applications/XAMPP/xamppfiles/bin/php artisan storage:link
 ```
 
 ## Run backend checks
@@ -49,7 +57,8 @@ cd backend
 - Post create, update, and delete use `auth:sanctum`.
 - The authenticated user is always the post owner on create; `user_id` is never trusted from request input.
 - Edit and delete are protected by `PostPolicy`, so users cannot change another user's posts even if they tamper with the frontend.
-- `image_path` remains nullable and responses expose `image_url: null` until image upload is added in a later milestone.
+- Post images are optional, stored on Laravel's `public` filesystem disk under `post-images/`, and saved in the database only as safe relative paths.
+- Post responses expose `image_url` for display and never expose raw server filesystem paths.
 - Public profiles return only safe fields: `id`, `name`, `username`, `bio`, `skills_offered`, `skills_wanted`, and `created_at`.
 - Profile editing only updates `name`, `username`, `bio`, `skills_offered`, and `skills_wanted`; email and password stay out of scope in this milestone.
 - Comments support top-level messages and replies through `parent_id`, and reply parents must belong to the same post.

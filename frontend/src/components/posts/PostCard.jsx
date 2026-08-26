@@ -17,6 +17,12 @@ function PostCard({ post, onDelete, isDeleting = false }) {
 
   return (
     <article className="post-card">
+      {post.image_url ? (
+        <Link className="post-card__image-link" to={`/posts/${post.id}`}>
+          <img className="post-card__image" src={post.image_url} alt={post.title} />
+        </Link>
+      ) : null}
+
       <div className="post-card__meta">
         <span className={`badge badge--${post.post_type}`}>
           {post.post_type === 'offer' ? 'Offering a skill' : 'Requesting help'}

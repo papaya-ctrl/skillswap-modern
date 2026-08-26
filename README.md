@@ -3,7 +3,7 @@
 SkillSwap Modern is a portfolio-ready Version 1 rebuild of the original school project. It keeps the idea of a community skill-sharing platform, but moves the app to a cleaner Laravel API + React frontend structure.
 
 Simple English portfolio summary:
-SkillSwap Modern is a web app where users can register, create skill posts, comment, view profiles, and send basic private messages. This version focuses on secure ownership checks, clear empty/error states, normal pagination, and a responsive interface.
+SkillSwap Modern is a web app where users can register, create skill posts with optional images, comment, view profiles, and send basic private messages. This version focuses on secure ownership checks, clear empty/error states, normal pagination, and a responsive interface.
 
 Japanese portfolio summary:
 SkillSwap Modern は、スキルを教えたい人と学びたい人をつなぐコミュニティアプリです。Laravel REST API と React を使って再構築し、認証、投稿管理、コメント、プロフィール、簡単なメッセージ機能、レスポンシブ対応を含む安定した V1 を目指しています。
@@ -22,6 +22,7 @@ SkillSwap Modern は、スキルを教えたい人と学びたい人をつなぐ
 - Protected dashboard
 - Public feed with keyword search, category filter, post-type filter, and normal pagination
 - Create, edit, and delete your own posts
+- Optional JPG/PNG/WebP images on posts
 - Public profile pages
 - Edit your own profile
 - Post detail pages
@@ -74,6 +75,7 @@ test -f .env || cp .env.example .env
 /Applications/XAMPP/xamppfiles/bin/php artisan key:generate
 /Applications/XAMPP/xamppfiles/bin/php artisan migrate
 /Applications/XAMPP/xamppfiles/bin/php artisan db:seed
+/Applications/XAMPP/xamppfiles/bin/php artisan storage:link
 ```
 
 Important backend environment values:
@@ -84,6 +86,9 @@ Important backend environment values:
 - `DB_CONNECTION=mysql`
 - `DB_DATABASE=skillswap_modern`
 - `SESSION_DRIVER=database`
+- `APP_URL=http://localhost:8000`
+
+Post images are stored through Laravel's public storage disk under `storage/app/public/post-images`. The database stores only the relative image path.
 
 Testing uses `backend/.env.testing` and must stay on `skillswap_modern_test`.
 
@@ -185,4 +190,4 @@ Planned portfolio images:
 ## Notes
 
 - `legacy-reference/` is kept only as a reference and should remain untouched during modern-app milestones.
-- This V1 intentionally does not add ratings, reviews, realtime chat, notifications, image upload, or infinite scrolling.
+- This version intentionally does not add ratings, reviews, realtime chat, notifications, or infinite scrolling.

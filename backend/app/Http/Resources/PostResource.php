@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\PostImageStorage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +21,7 @@ class PostResource extends JsonResource
             'description' => $this->description,
             'post_type' => $this->post_type,
             'payment_type' => $this->payment_type,
-            'image_url' => null,
+            'image_url' => app(PostImageStorage::class)->url($this->image_path),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
             'author' => [

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PostImageField from './PostImageField.jsx'
 
 function buildInitialValues(initialData) {
   if (!initialData) {
@@ -30,6 +31,9 @@ function PostForm({
 }) {
   const [values, setValues] = useState(() => buildInitialValues(initialData))
   const [errors, setErrors] = useState({})
+  const [imageFile, setImageFile] = useState(null)
+  const [imageError, setImageError] = useState('')
+  const [removeExistingImage, setRemoveExistingImage] = useState(false)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -45,14 +49,41 @@ function PostForm({
     }))
   }
 
+  function handleImageChange(file, errorMessage) {
+    setImageFile(file)
+    setImageError(errorMessage)
+
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      image: undefined,
+      remove_image: undefined,
+    }))
+  }
+
+  function handleRemoveExistingImageChange(shouldRemove) {
+    setRemoveExistingImage(shouldRemove)
+
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      image: undefined,
+      remove_image: undefined,
+    }))
+  }
+
   async function handleSubmit(event) {
     event.preventDefault()
     setErrors({})
+
+    if (imageError) {
+      return
+    }
 
     try {
       await onSubmit({
         ...values,
         category_id: Number(values.category_id),
+        image: imageFile,
+        remove_image: removeExistingImage,
       })
     } catch (error) {
       if (error.type === 'validation') {
@@ -138,6 +169,15 @@ function PostForm({
           {errors.payment_type ? <p className="field__error">{errors.payment_type[0]}</p> : null}
         </div>
       </div>
+
+      <PostImageField
+        existingImageUrl={initialData?.image_url ?? ''}
+        imageFile={imageFile}
+        removeExistingImage={removeExistingImage}
+        error={imageError || errors.image?.[0] || errors.remove_image?.[0] || ''}
+        onImageChange={handleImageChange}
+        onRemoveExistingImageChange={handleRemoveExistingImageChange}
+      />
 
       <button type="submit" className="button" disabled={isSubmitting}>
         {isSubmitting ? 'Saving...' : submitLabel}

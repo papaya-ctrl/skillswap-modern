@@ -121,7 +121,7 @@ It intentionally excludes Version 2 features:
   "description": "Looking for beginner-friendly tutoring.",
   "post_type": "request",
   "payment_type": "exchange",
-  "image_url": null,
+  "image_url": "http://localhost:8000/storage/post-images/example.jpg",
   "created_at": "2026-06-11T10:00:00Z",
   "updated_at": "2026-06-11T10:00:00Z",
   "author": {
@@ -348,7 +348,7 @@ Response:
     "description": "Looking for beginner-friendly tutoring.",
     "post_type": "request",
     "payment_type": "exchange",
-    "image_url": null,
+    "image_url": "http://localhost:8000/storage/post-images/example.jpg",
     "author": {
       "id": 2,
       "name": "Bob Example",
@@ -414,7 +414,7 @@ Response:
 
 Creates a new post.
 
-Request:
+JSON request without an image:
 
 ```json
 {
@@ -426,6 +426,11 @@ Request:
 }
 ```
 
+Multipart request with an image:
+
+- `Content-Type`: let the browser/client generate `multipart/form-data` with its boundary.
+- Fields: `title`, `description`, `post_type`, `payment_type`, `category_id`, optional `image`.
+
 Validation:
 
 - `title`: required, string, max 120
@@ -433,6 +438,7 @@ Validation:
 - `post_type`: required, in `offer,request`
 - `payment_type`: required, in `free,paid,exchange`
 - `category_id`: required, exists
+- `image`: optional image file, JPG/JPEG/PNG/WebP only, max 2 MB
 
 Response:
 
@@ -455,9 +461,21 @@ Authorization:
 
 - Post owner only
 
+JSON request without image replacement:
+
+- Same post fields as create.
+- Optional `remove_image: true` removes the current image.
+
+Multipart request with image replacement:
+
+- Send `POST /api/posts/{post}` with `_method=PUT`.
+- Fields: `_method`, `title`, `description`, `post_type`, `payment_type`, `category_id`, `image`.
+- Do not send `remove_image` together with `image`.
+
 Validation:
 
 - Same as create
+- `remove_image`: optional boolean, cannot be combined with `image`
 
 Response:
 

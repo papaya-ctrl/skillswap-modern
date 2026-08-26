@@ -352,6 +352,48 @@ textarea {
   border: 1px solid rgba(30, 106, 66, 0.14);
 }
 
+.image-field {
+  gap: 0.85rem;
+}
+
+.image-field__preview,
+.post-detail__image,
+.post-card__image-link {
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 1rem;
+  background: #eef3f8;
+}
+
+.image-field__preview {
+  aspect-ratio: 16 / 9;
+}
+
+.image-field__preview img,
+.post-detail__image img,
+.post-card__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.image-field__actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.image-field__actions input[type='file'] {
+  padding: 0.75rem;
+}
+
+.image-field__status {
+  margin: 0;
+  color: #5c667a;
+  font-size: 0.95rem;
+}
+
 .state-card {
   margin: 5rem auto;
   text-align: center;
@@ -463,6 +505,10 @@ textarea {
   min-width: 0;
 }
 
+.post-card__image-link {
+  aspect-ratio: 16 / 10;
+}
+
 .post-card__category {
   margin: 0;
   color: #2d7dd2;
@@ -523,6 +569,10 @@ textarea {
 
 .button--danger {
   color: #a53a3a;
+}
+
+.post-detail__image {
+  aspect-ratio: 16 / 9;
 }
 
 .feed-toolbar__summary {

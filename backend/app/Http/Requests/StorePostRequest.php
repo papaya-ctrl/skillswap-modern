@@ -13,7 +13,7 @@ class StorePostRequest extends FormRequest
     }
 
     /**
-     * @return array<string, array<int, string|\Illuminate\Validation\Rules\In>>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
@@ -23,6 +23,16 @@ class StorePostRequest extends FormRequest
             'post_type' => ['required', Rule::in(['offer', 'request'])],
             'payment_type' => ['required', Rule::in(['free', 'paid', 'exchange'])],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
+            'image' => [
+                'nullable',
+                'file',
+                'image',
+                'mimetypes:image/jpeg,image/png,image/webp',
+                'mimes:jpg,jpeg,png,webp',
+                'extensions:jpg,jpeg,png,webp',
+                'max:2048',
+            ],
+            'remove_image' => ['prohibited'],
         ];
     }
 }
