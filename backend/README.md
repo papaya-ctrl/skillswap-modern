@@ -1,8 +1,8 @@
 # SkillSwap Backend
 
-Laravel 12 powers the SkillSwap Modern API. Milestone 7 focuses on V1 polish, documentation, and final verification on top of the existing auth, feed, profile, comments, and inbox flows.
+Laravel 12 powers the SkillSwap Modern REST API, including authentication, posts, profiles, comments, messaging, and secure image uploads.
 
-For the full project setup path, start with the root [README.md](/Applications/XAMPP/xamppfiles/htdocs/skillswap-modern/README.md).
+For the full project setup path, start with the root [README.md](../README.md).
 
 ## Current API areas
 
@@ -50,7 +50,7 @@ cd backend
 /Applications/XAMPP/xamppfiles/bin/php artisan test
 ```
 
-## Current API areas
+## API behavior and security
 
 - Feed is public and supports `query`, `category_id`, `post_type`, and paginated `per_page`.
 - Feed ordering is newest first by `created_at desc`, then `id desc`.
@@ -69,7 +69,7 @@ cd backend
 - Message creation accepts only `body`; `sender_id` and `recipient_id` are always derived on the server from the authenticated user and the conversation participants.
 - Read tracking only marks unread messages addressed to the current user in the current conversation.
 
-## Milestone 7 verification notes
+## Verification notes
 
 - Continue using MySQL databases `skillswap_modern` and `skillswap_modern_test`.
 - Do not introduce SQLite files in `backend/database/`.

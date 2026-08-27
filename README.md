@@ -35,10 +35,9 @@ SkillSwap Modern は、スキルを教えたい人と学びたい人をつなぐ
 
 ```text
 skillswap-modern/
-├── backend/            Laravel API
+├── backend/            Laravel REST API
 ├── docs/               planning and QA docs
-├── frontend/           React + Vite SPA
-└── legacy-reference/   original flat PHP reference app (do not modify)
+└── frontend/           React + Vite SPA
 ```
 
 ## Requirements
@@ -86,7 +85,6 @@ Important backend environment values:
 - `DB_CONNECTION=mysql`
 - `DB_DATABASE=skillswap_modern`
 - `SESSION_DRIVER=database`
-- `APP_URL=http://localhost:8000`
 
 Post images are stored through Laravel's public storage disk under `storage/app/public/post-images`. The database stores only the relative image path.
 
@@ -161,8 +159,8 @@ Repo checks:
 cd /Applications/XAMPP/xamppfiles/htdocs/skillswap-modern
 git diff --check
 find backend -name '*.sqlite' -print
-git diff --name-only -- backend/composer.json backend/composer.lock backend/package.json frontend/package.json frontend/package-lock.json
-git diff -- backend/composer.json backend/composer.lock backend/package.json frontend/package.json frontend/package-lock.json
+git diff --name-only -- backend/composer.json backend/composer.lock frontend/package.json frontend/package-lock.json
+git diff -- backend/composer.json backend/composer.lock frontend/package.json frontend/package-lock.json
 git diff --cached --name-only
 git diff --cached --name-only | rg '(^|/)(\\.env($|\\.)|node_modules|vendor|dist|public/build|storage|legacy-reference|.*\\.log$)'
 git status --short
@@ -171,23 +169,8 @@ git ls-files --others --exclude-standard
 
 ## Manual QA
 
-- Manual checklist: [docs/MANUAL_TEST_CHECKLIST.md](/Applications/XAMPP/xamppfiles/htdocs/skillswap-modern/docs/MANUAL_TEST_CHECKLIST.md)
-- Screenshot guide: [docs/PORTFOLIO_SCREENSHOTS.md](/Applications/XAMPP/xamppfiles/htdocs/skillswap-modern/docs/PORTFOLIO_SCREENSHOTS.md)
-
-## Screenshot Placeholders
-
-Planned portfolio images:
-
-- Home feed
-- Post detail
-- Create post form
-- Profile page
-- Comments section
-- Inbox list
-- Conversation page
-- Dashboard with authenticated navbar
+- Manual checklist: [docs/MANUAL_TEST_CHECKLIST.md](docs/MANUAL_TEST_CHECKLIST.md)
 
 ## Notes
 
-- `legacy-reference/` is kept only as a reference and should remain untouched during modern-app milestones.
 - This version intentionally does not add ratings, reviews, realtime chat, notifications, or infinite scrolling.
