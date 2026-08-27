@@ -1,6 +1,6 @@
 # SkillSwap Frontend
 
-This React + Vite frontend now represents the Milestone 7 V1 UI polish pass for SkillSwap Modern.
+This React + Vite frontend provides the SPA user interface for SkillSwap Modern.
 
 For the full project setup path, start with the root [README.md](../README.md).
 
@@ -32,7 +32,7 @@ npm run build
 - Public: `/`, `/login`, `/register`, `/posts/:postId`, `/profiles/:userId`
 - Protected: `/dashboard`, `/settings/profile`, `/posts/new`, `/posts/:postId/edit`, `/inbox`, `/inbox/:conversationId`
 
-## Current route overview
+## Feature overview
 
 - Home page is now the public feed with keyword, category, and post-type filters.
 - Feed uses normal pagination and links every card to a public post-detail page.
@@ -47,10 +47,10 @@ npm run build
 - Post detail pages now include a `Message owner` action for non-owners. Guests are redirected to login first, then returned to the same post page.
 - `/inbox` lists the authenticated user’s conversations with last-message previews, unread counts, and related post context.
 - `/inbox/:conversationId` loads the conversation header and full message thread, then marks incoming unread messages as read after the page opens.
-- The inbox is intentionally page-driven for this milestone: no polling, realtime updates, notifications, or websocket behavior.
+- The inbox is intentionally page-driven: no polling, realtime updates, notifications, or websocket behavior.
 - `403` API responses are handled explicitly so forbidden inbox routes show a clear access message instead of a generic failure.
 
-## Milestone 7 polish focus
+## Quality focus
 
 - Responsive layout review on mobile and desktop
 - Consistent loading, empty, and error states
