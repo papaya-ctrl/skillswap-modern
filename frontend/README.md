@@ -2,7 +2,7 @@
 
 This React + Vite frontend now represents the Milestone 7 V1 UI polish pass for SkillSwap Modern.
 
-For the full project setup path, start with the root [README.md](/Applications/XAMPP/xamppfiles/htdocs/skillswap-modern/README.md).
+For the full project setup path, start with the root [README.md](../README.md).
 
 ## Local environment
 
@@ -55,7 +55,6 @@ npm run build
 - Responsive layout review on mobile and desktop
 - Consistent loading, empty, and error states
 - Clear guest redirects and owner-only messaging
-- Final README accuracy and portfolio screenshot guidance
 
 ## HTTP behavior
 

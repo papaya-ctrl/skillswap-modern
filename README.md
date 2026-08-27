@@ -171,21 +171,7 @@ git ls-files --others --exclude-standard
 
 ## Manual QA
 
-- Manual checklist: [docs/MANUAL_TEST_CHECKLIST.md](/Applications/XAMPP/xamppfiles/htdocs/skillswap-modern/docs/MANUAL_TEST_CHECKLIST.md)
-- Screenshot guide: [docs/PORTFOLIO_SCREENSHOTS.md](/Applications/XAMPP/xamppfiles/htdocs/skillswap-modern/docs/PORTFOLIO_SCREENSHOTS.md)
-
-## Screenshot Placeholders
-
-Planned portfolio images:
-
-- Home feed
-- Post detail
-- Create post form
-- Profile page
-- Comments section
-- Inbox list
-- Conversation page
-- Dashboard with authenticated navbar
+- Manual checklist: [docs/MANUAL_TEST_CHECKLIST.md](docs/MANUAL_TEST_CHECKLIST.md)
 
 ## Notes
 

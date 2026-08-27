@@ -2,7 +2,7 @@
 
 Laravel 12 powers the SkillSwap Modern API. Milestone 7 focuses on V1 polish, documentation, and final verification on top of the existing auth, feed, profile, comments, and inbox flows.
 
-For the full project setup path, start with the root [README.md](/Applications/XAMPP/xamppfiles/htdocs/skillswap-modern/README.md).
+For the full project setup path, start with the root [README.md](../README.md).
 
 ## Current API areas
 
@@ -50,7 +50,7 @@ cd backend
 /Applications/XAMPP/xamppfiles/bin/php artisan test
 ```
 
-## Current API areas
+## API behavior and security
 
 - Feed is public and supports `query`, `category_id`, `post_type`, and paginated `per_page`.
 - Feed ordering is newest first by `created_at desc`, then `id desc`.
